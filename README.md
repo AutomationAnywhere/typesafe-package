@@ -3,7 +3,6 @@
 An Automation Anywhere custom package that wraps [TypeSafe](https://typesafe.ai)'s Jev model, letting a bot ask a **typed, structured question** about a piece of text and get back a precise, machine-usable answer — a probability, a category, or a score — instead of a paragraph of prose to parse.
 
 Full reference documentation (parameters, return fields, troubleshooting): [`TypeSafe-Package-Documentation.docx`](TypeSafe-Package-Documentation.docx).
-Package development conventions this repo follows: [`AA_PACKAGE_BEST_PRACTICES.md`](AA_PACKAGE_BEST_PRACTICES.md).
 
 ## How it works
 
@@ -56,7 +55,7 @@ src/main/resources/
 
 ## Building
 
-Requires **JDK 11** (the AA SDK's annotation processor breaks under JDK 17+ with this Gradle version — see `AA_PACKAGE_BEST_PRACTICES.md` §2.2):
+Requires **JDK 11** (the AA SDK's annotation processor breaks under JDK 17+ with this Gradle version):
 
 ```bash
 export JAVA_HOME=/Library/Java/JavaVirtualMachines/temurin-11.jdk/Contents/Home
@@ -71,8 +70,8 @@ Produces `build/libs/TypeSafePackage-<version>.jar`, ready to upload via Control
 
 ## Platform support
 
-Custom packages can only target `WINDOWS` and `MAC_OS` Bot Agents. `HEADLESS`/`ONDEMAND_CLOUD` (API Tasks, cloud compute) require a jar signed by the Automation Anywhere product team — not available to custom package authors. Attempting to install a package that claims those targets fails at install time with `package.invalid.signature`, not a runtime warning.
+Runs on `WINDOWS` and `MAC_OS` Bot Agents.
 
 ## Demo automations
 
-Two example TaskBots (built against this package, in the `aa-training-sbx` tenant, not part of this repo's build) exercise all three actions on sample support tickets — categorizing urgency, department routing, and frustration — including one that benchmarks TypeSafe's 3-actions-per-ticket approach against a single general-purpose GenAI prompt call for the same information (see [`typesafe-vs-genai-comparison.md`](typesafe-vs-genai-comparison.md) for the results: TypeSafe came out roughly 1.5x faster and ~47x cheaper per ticket).
+Two example TaskBots built against this package (not part of this repo's build) exercise all three actions on sample support tickets — categorizing urgency, department routing, and frustration — including one that benchmarks TypeSafe's 3-actions-per-ticket approach against a single general-purpose GenAI prompt call for the same information (see [`typesafe-vs-genai-comparison.md`](typesafe-vs-genai-comparison.md) for the results: TypeSafe came out roughly 1.5x faster and ~47x cheaper per ticket).
