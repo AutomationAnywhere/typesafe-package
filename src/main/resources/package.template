@@ -1,0 +1,11 @@
+{
+  "name": "TypeSafePackage",
+  "label": "TypeSafe",
+  "description": "Evaluate text against custom criteria using the TypeSafe AI API.",
+  "group": "",
+  "artifactName": "",
+  "packageVersion": "",
+  "codeVersion": "",
+  "author": "",
+  "commands": []
+}

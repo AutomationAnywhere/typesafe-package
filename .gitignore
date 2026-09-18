@@ -1,0 +1,10 @@
+.env
+.aa_config.json
+.aa_token_cache.json
+reference/
+catalog/
+build/
+.gradle/
+*.class
+.DS_Store
+A360-package-sdk-2.13.0-javadoc/

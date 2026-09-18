@@ -1,0 +1,336 @@
+{
+  "triggers": [],
+  "nodes": [
+    {
+      "uid": "fd7facac-4468-4dfa-9f4e-a28e65a23960",
+      "commandName": "assign",
+      "packageName": "String",
+      "disabled": false,
+      "attributes": [
+        {
+          "name": "sourceString",
+          "value": {
+            "type": "STRING",
+            "string": "Hi, I've been trying to connect my Stripe account for 3 days and it keeps failing. I'm losing sales. Please help ASAP."
+          }
+        }
+      ],
+      "returnTo": {
+        "type": "VARIABLE",
+        "variableName": "sIncomingText"
+      }
+    },
+    {
+      "uid": "35fec580-b5c9-4dd7-9211-ac683c9cd394",
+      "commandName": "evaluateBoolean",
+      "packageName": "TypeSafePackage",
+      "disabled": false,
+      "attributes": [
+        {
+          "name": "apiKey",
+          "value": {
+            "type": "CREDENTIAL",
+            "credential": {
+              "name": "TypeSafe",
+              "lockerName": "MicahsLocker",
+              "attributeName": "API_KEY"
+            }
+          }
+        },
+        {
+          "name": "text",
+          "value": {
+            "type": "STRING",
+            "expression": "$sIncomingText$"
+          }
+        },
+        {
+          "name": "question",
+          "value": {
+            "type": "STRING",
+            "string": "Does this message express urgency?"
+          }
+        },
+        {
+          "name": "model",
+          "value": {
+            "type": "STRING",
+            "string": "jev-latest"
+          }
+        }
+      ],
+      "returnTo": {
+        "type": "VARIABLE",
+        "variableName": "dUrgency"
+      }
+    },
+    {
+      "uid": "3a958f2c-72b9-4f8f-8355-9c72e56b3fb4",
+      "commandName": "evaluateChoice",
+      "packageName": "TypeSafePackage",
+      "disabled": false,
+      "attributes": [
+        {
+          "name": "apiKey",
+          "value": {
+            "type": "CREDENTIAL",
+            "credential": {
+              "name": "TypeSafe",
+              "lockerName": "MicahsLocker",
+              "attributeName": "API_KEY"
+            }
+          }
+        },
+        {
+          "name": "text",
+          "value": {
+            "type": "STRING",
+            "expression": "$sIncomingText$"
+          }
+        },
+        {
+          "name": "question",
+          "value": {
+            "type": "STRING",
+            "string": "Which team should handle this"
+          }
+        },
+        {
+          "name": "categories",
+          "value": {
+            "type": "DICTIONARY",
+            "dictionary": [
+              {
+                "key": "billing",
+                "value": {
+                  "type": "STRING",
+                  "string": "Payment or subscription issues"
+                }
+              },
+              {
+                "key": "technical",
+                "value": {
+                  "type": "STRING",
+                  "string": "Bugs or integration problems"
+                }
+              },
+              {
+                "key": "sales",
+                "value": {
+                  "type": "STRING",
+                  "string": "Pricing or account questions"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "name": "model",
+          "value": {
+            "type": "STRING",
+            "string": "jev-latest"
+          }
+        }
+      ],
+      "returnTo": {
+        "type": "VARIABLE",
+        "variableName": "dDepartment"
+      }
+    },
+    {
+      "uid": "b124f725-bda0-4887-80a1-4f11fde2b8c4",
+      "commandName": "evaluateScore",
+      "packageName": "TypeSafePackage",
+      "disabled": false,
+      "attributes": [
+        {
+          "name": "apiKey",
+          "value": {
+            "type": "CREDENTIAL",
+            "credential": {
+              "name": "TypeSafe",
+              "lockerName": "MicahsLocker",
+              "attributeName": "API_KEY"
+            }
+          }
+        },
+        {
+          "name": "text",
+          "value": {
+            "type": "STRING",
+            "expression": "$sIncomingText$"
+          }
+        },
+        {
+          "name": "question",
+          "value": {
+            "type": "STRING",
+            "string": "How frustrated the customer appears"
+          }
+        },
+        {
+          "name": "scaleLevels",
+          "value": {
+            "type": "LIST",
+            "list": [
+              {
+                "type": "STRING",
+                "string": "Calm, just stating facts"
+              },
+              {
+                "type": "STRING",
+                "string": "Frustrated but civil"
+              },
+              {
+                "type": "STRING",
+                "string": "Very angry, strong language"
+              }
+            ]
+          }
+        },
+        {
+          "name": "model",
+          "value": {
+            "type": "STRING",
+            "string": "jev-latest"
+          }
+        }
+      ],
+      "returnTo": {
+        "type": "VARIABLE",
+        "variableName": "dFrustration"
+      }
+    },
+    {
+      "uid": "a9f9f722-3f10-4b84-9fa7-5c294ee71c71",
+      "commandName": "messageBox",
+      "packageName": "MessageBox",
+      "disabled": false,
+      "attributes": [
+        {
+          "name": "title",
+          "value": {
+            "type": "STRING",
+            "string": "Automation Anywhere Enterprise Client"
+          }
+        },
+        {
+          "name": "content",
+          "value": {
+            "type": "STRING",
+            "expression": "Department: $dDepartment{choice}$\nUrgency: $dUrgency{probability}$\nFrustration: $dFrustration{score}$"
+          }
+        },
+        {
+          "name": "scrollLines",
+          "value": {
+            "type": "NUMBER",
+            "number": "30"
+          }
+        },
+        {
+          "name": "closeMsgBox",
+          "value": {
+            "type": "BOOLEAN",
+            "boolean": false
+          }
+        }
+      ]
+    }
+  ],
+  "variables": [
+    {
+      "type": "NUMBER",
+      "subtype": "UNDEFINED",
+      "readOnly": false,
+      "input": false,
+      "output": false,
+      "name": "SampleNumber"
+    },
+    {
+      "type": "STRING",
+      "subtype": "UNDEFINED",
+      "readOnly": false,
+      "input": false,
+      "output": false,
+      "name": "SampleString"
+    },
+    {
+      "name": "sIncomingText",
+      "description": "",
+      "type": "STRING",
+      "readOnly": false,
+      "input": false,
+      "output": false,
+      "defaultValue": {
+        "type": "STRING",
+        "string": ""
+      }
+    },
+    {
+      "name": "dDepartment",
+      "description": "",
+      "type": "DICTIONARY",
+      "readOnly": false,
+      "input": false,
+      "output": false,
+      "subtype": "STRING",
+      "defaultValue": {
+        "type": "DICTIONARY",
+        "dictionary": []
+      }
+    },
+    {
+      "name": "dUrgency",
+      "description": "",
+      "type": "DICTIONARY",
+      "readOnly": false,
+      "input": false,
+      "output": false,
+      "subtype": "STRING",
+      "defaultValue": {
+        "type": "DICTIONARY",
+        "dictionary": []
+      }
+    },
+    {
+      "name": "dFrustration",
+      "description": "",
+      "type": "DICTIONARY",
+      "readOnly": false,
+      "input": false,
+      "output": false,
+      "subtype": "STRING",
+      "defaultValue": {
+        "type": "DICTIONARY",
+        "dictionary": []
+      }
+    }
+  ],
+  "packages": [
+    {
+      "name": "MessageBox",
+      "version": "3.8.1",
+      "settingsAttributes": []
+    },
+    {
+      "name": "String",
+      "version": "5.12.6",
+      "settingsAttributes": []
+    },
+    {
+      "name": "TypeSafePackage",
+      "version": "2.11.0-20260918-112904",
+      "settingsAttributes": []
+    }
+  ],
+  "properties": {
+    "botCodeVersion": "7",
+    "improvedNumberSupport": true,
+    "timeout": "0s",
+    "automationPriority": "PRIORITY_MEDIUM",
+    "runInChildWindow": false,
+    "runInChildWindowMode": "DESKTOP"
+  },
+  "workItemTemplateName": null
+}
