@@ -76,7 +76,3 @@ Custom packages can only target `WINDOWS` and `MAC_OS` Bot Agents. `HEADLESS`/`O
 ## Demo automations
 
 Two example TaskBots (built against this package, in the `aa-training-sbx` tenant, not part of this repo's build) exercise all three actions on sample support tickets — categorizing urgency, department routing, and frustration — including one that benchmarks TypeSafe's 3-actions-per-ticket approach against a single general-purpose GenAI prompt call for the same information (see [`typesafe-vs-genai-comparison.md`](typesafe-vs-genai-comparison.md) for the results: TypeSafe came out roughly 1.5x faster and ~47x cheaper per ticket).
-
-## Related
-
-- [`aa-automation-builder-fixes.md`](aa-automation-builder-fixes.md) — confirmed JSON wire-format gaps found in the [aa-automation-builder](https://github.com/AutomationAnywhere) Claude Code plugin's bot compiler while building the demo automations (missing `DICTIONARY`/`LIST`/`CREDENTIAL` attribute serialization, and no support for assigning a step's output to a variable), with real confirmed shapes and suggested patches.
